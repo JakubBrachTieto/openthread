@@ -62,38 +62,6 @@ static int  sMsCounter;
 
 otInstance *sInstance;
 
-void ClkInit(void)
-{
-    NVIC_ClearPendingIRQ(XTAL16RDY_IRQn);
-    NVIC_EnableIRQ(XTAL16RDY_IRQn);                 // Activate XTAL16 Ready IRQ
-    hw_cpm_set_divn(false);                         // External crystal is 16MHz
-    hw_cpm_enable_rc32k();
-    hw_cpm_lp_set_rc32k();
-    hw_cpm_set_xtal16m_settling_time(dg_configXTAL16_SETTLE_TIME_RC32K);
-    hw_cpm_enable_xtal16m();                        // Enable XTAL16M
-    hw_cpm_configure_xtal32k_pins();                // Configure XTAL32K pins
-    hw_cpm_configure_xtal32k();                     // Configure XTAL32K
-    hw_cpm_enable_xtal32k();                        // Enable XTAL32K
-    hw_watchdog_unfreeze();                         // Start watchdog
-
-    while (!hw_cpm_is_xtal16m_started());           // Block until XTAL16M starts
-
-    hw_watchdog_freeze();                           // Stop watchdog
-    hw_cpm_set_recharge_period((uint16_t)dg_configSET_RECHARGE_PERIOD);
-    hw_watchdog_unfreeze();                         // Start watchdog
-    hw_cpm_pll_sys_on();                            // Turn on PLL
-    hw_watchdog_freeze();                           // Stop watchdog
-
-    hw_qspi_set_div(HW_QSPI_DIV_2);                 // Set QSPI div by 2
-
-    hw_cpm_disable_pll_divider();                   // Disable divider (div by 2)
-    hw_cpm_set_sysclk(SYS_CLK_IS_PLL);
-    hw_cpm_set_hclk_div(ahb_div2);
-    hw_cpm_set_pclk_div(0);
-
-    hw_otpc_init();
-    hw_otpc_set_speed(HW_OTPC_SYS_CLK_FREQ_48);
-}
 
 /*
  * Example function. Blink LED according to node state
@@ -166,8 +134,6 @@ void ExampleProcess(otInstance *aInstance)
 
 void PlatformInit(int argc, char *argv[])
 {
-    // Initialize System Clock
-    ClkInit();
     // Initialize Random number generator
     da15000RandomInit();
     // Initialize Alarm

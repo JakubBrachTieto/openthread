@@ -61,12 +61,12 @@ PLATFORM_SOURCES                                                                
     platform.c                                                                            \
     radio.c                                                                               \
     random.c                                                                              \
-    vector.c                                                                              \
-    cstartup.c                                                                            \
+    vector_table.S                                                                        \
+    config.c                                                                            \
     uart.c                                                                                \
-    cortex-m_cstartup.c                                                                   \
+    startup_ARMCM0.S                                                                      \
     startup-gcc.c                                                                         \
-    clock.c                                                                               \
+    system_ARMCM0.c                                                                       \
     misc.c                                                                                \
     $(NULL)
 
@@ -74,6 +74,7 @@ DIALOG_SOURCES                                                                  
     @top_builddir@/third_party/dialog/DialogSDK/bsp/memory/src/qspi_automode.c            \
     @top_builddir@/third_party/dialog/DialogSDK/bsp/peripherals/src/hw_qspi.c             \
     @top_builddir@/third_party/dialog/DialogSDK/bsp/peripherals/src/hw_timer0.c           \
+    @top_builddir@/third_party/dialog/DialogSDK/bsp/peripherals/src/hw_gpadc.c            \
     @top_builddir@/third_party/dialog/DialogSDK/bsp/peripherals/src/hw_gpio.c             \
     @top_builddir@/third_party/dialog/DialogSDK/bsp/peripherals/src/hw_cpm.c              \
     @top_builddir@/third_party/dialog/DialogSDK/bsp/peripherals/src/hw_trng.c             \
